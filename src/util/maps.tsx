@@ -142,7 +142,7 @@ export async function getProductKronan(term: string) {
 		return verd
 	})();
 	let verd = await a;
-	verd = !Number.isNaN(verd) ? verd : 0;
+	verd = !Number.isNaN(verd) ? Number(verd) : 0;
 	return {
 		verd: verd,
 		verlsun: 'Kronan'
