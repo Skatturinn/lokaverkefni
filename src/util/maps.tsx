@@ -1,5 +1,18 @@
 // https://maps.googleapis.com/maps/api/distancematrix/xml?origins=$1&destinations=$2&mode=$3&key=$k
-import puppeteer from "puppeteer";
+// import puppeteer from "puppeteer";
+import chromium from "@sparticuz/chromium";
+import puppeteer from "puppeteer-core";
+
+// Optional: If you'd like to use the new headless mode. "shell" is the default.
+// NOTE: Because we build the shell binary, this option does not work.
+//       However, this option will stay so when we migrate to full chromium it will work.
+chromium.setHeadlessMode = true;
+
+// Optional: If you'd like to disable webgl, true is the default.
+chromium.setGraphicsMode = false;
+
+// Optional: Load any fonts you need. Open Sans is included by default in AWS Lambda instances
+
 const envkey = process.env.API_KEY
 
 export async function getDistmatrix(origins: string, destinations: string, mode: "driving" | "walking", key: string) {
@@ -20,7 +33,12 @@ export async function getDistmatrix(origins: string, destinations: string, mode:
 export async function getProductNetto(term: string, howMany: number = 30) {
 	const a = (async () => {
 		// Launch a headless browser
-		const browser = await puppeteer.launch();
+		const browser = await puppeteer.launch({
+			args: chromium.args,
+			defaultViewport: chromium.defaultViewport,
+			executablePath: await chromium.executablePath(),
+			headless: chromium.headless,
+		});
 
 		// Create a new page
 		const page = await browser.newPage();
@@ -68,7 +86,12 @@ export async function getProductNetto(term: string, howMany: number = 30) {
 export async function getLocationNetto() {
 	const a = (async () => {
 		// Launch a headless browser
-		const browser = await puppeteer.launch();
+		const browser = await puppeteer.launch({
+			args: chromium.args,
+			defaultViewport: chromium.defaultViewport,
+			executablePath: await chromium.executablePath(),
+			headless: chromium.headless,
+		});
 
 		// Create a new page
 		const page = await browser.newPage();
@@ -121,7 +144,12 @@ export async function getProductKronan(term: string) {
 	// console.log(html)
 	const a = (async () => {
 		// Launch a headless browser
-		const browser = await puppeteer.launch();
+		const browser = await puppeteer.launch({
+			args: chromium.args,
+			defaultViewport: chromium.defaultViewport,
+			executablePath: await chromium.executablePath(),
+			headless: chromium.headless,
+		});
 
 		// Create a new page
 		const page = await browser.newPage();
